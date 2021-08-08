@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        body {
+            background-color: rgb(72, 72, 72);
+        }
+    </style>
+    <script src="index.js"></script>
+
+</head>
+<body>
+
+    <div x-data="{...window.numbers}">
+        <label for="tm">Training Max: </label>
+        <input id="tm" type="number" x-model="tm">
+        <ul>
+            <span>Warm Up:</span>
+            <template x-for="percentage in wu_percentages">
+                <li x-show="tm">
+                    <span x-text="`${percentage * 100}% - ${round_weight(tm * percentage)}lbs`"></span>
+                    <div x-show="calculate_plates(round_weight(tm * percentage))">
+                        <div><b>Plates per side:</b></div>
+                        <div x-text="`${calculate_plates(round_weight(tm * percentage))}`"></div>
+                    </div>
+                </li>
+            </template>
+        </ul>
+        <ul>
+            <span>Week 1:</span>
+            <template x-for="percentage in w1_percentages">
+                <li x-show="tm">
+                    <span x-text="`${percentage * 100}% - ${round_weight(tm * percentage)}lbs`"></span>
+                    <div x-show="calculate_plates(round_weight(tm * percentage))">
+                        <div><b>Plates per side:</b></div>
+                        <div x-text="`${calculate_plates(round_weight(tm * percentage))}`"></div>
+                    </div>
+                </li>
+            </template>
+        </ul>
+        <ul>
+            <span>Week 2:</span>
+            <template x-for="percentage in w2_percentages">
+                <li x-show="tm">
+                    <span x-text="`${percentage * 100}% - ${round_weight(tm * percentage)}lbs`"></span>
+                    <div x-show="calculate_plates(round_weight(tm * percentage))">
+                        <div><b>Plates per side:</b></div>
+                        <div x-text="`${calculate_plates(round_weight(tm * percentage))}`"></div>
+                    </div>
+                </li>
+            </template>
+        </ul>
+        <ul>
+            <span>Week 3:</span>
+            <template x-for="percentage in w3_percentages">
+                <li x-show="tm">
+                    <span x-text="`${percentage * 100}% - ${round_weight(tm * percentage)}lbs`"></span>
+                    <div x-show="calculate_plates(round_weight(tm * percentage))">
+                        <div><b>Plates per side:</b></div>
+                        <div x-text="`${calculate_plates(round_weight(tm * percentage))}`"></div>
+                    </div>
+                </li>
+            </template>
+        </ul>
+    </div>
+
+</body>
+</html>
