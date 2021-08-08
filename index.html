@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
     <meta charset="UTF-8">
@@ -7,51 +8,92 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>531 Calculator</title>
     <style>
-        body {
-            font-family: Verdana, Geneva, Tahoma, sans-serif;
+
+        * {
+            margin: 0;
+            padding: 0;
         }
 
-        li.closed::marker {
-            content: "[ + ] "
+        body {
+            font-family: Verdana, Geneva, Tahoma, sans-serif;
+            background-color: rgb(100, 237, 184);
+        }
+
+        .main {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            min-width: 90%;
+            margin: 0;
+            padding: .75em;
+        }
+
+        label + input {
+            margin: 1em;
+        }
+
+        .card {
+            box-sizing: border-box;
+            background-color: hsl(196, 100%, 85%);
+            padding: 1.2em;
+            justify-self: center;
+            margin: .75em;
+            width: 90%;
+            border-radius: .3em;
+            border: 1px solid rgba(97, 165, 189, .4);
+        }
+
+        ul {
+            list-style-position: inside;
+            margin: 0;
+            padding: 0;
+        }
+
+        li {
+            margin: .6em;
+        }
+
+        li::marker {
+            content: "[ + ] ";
         }
 
         li.open::marker {
-            content: "[ = ] "
+            content: "[ = ] ";
         }
-
     </style>
     <script src="app.js"></script>
 
 </head>
+
 <body>
 
-    <div x-data="{...window.numbers}">
-        <label for="tm">Training Max: </label>
+    <div x-data="{...window.numbers}" class="main">
+        <label for="tm">Training Max:</label>
         <input id="tm" type="number" x-model="tm" placeholder="">
         <template x-for="(workout, index) in workouts">
-            <ul x-show="tm > 0">
-                <template x-if="index === 0" >
-                    <h3 x-text="`Warm Up: `"></h3>
-                </template>
-                <template x-if="index > 0">
-                    <h3 x-text="`Workout ${index + 1}: `"></h3>
-                </template>
-                <template x-for="percentage in workout">
-                    <li
-                        x-data="{...window.plateCalc}"
-                        @click="plateCalc = !plateCalc"
-                        :class="plateCalc ? 'open' : 'closed'"
-                    >
-                        <span x-text="`${percentage * 100}% - ${roundWeight(tm * percentage)}lbs`"></span>
-                        <div x-show="plateCalc && calculatePlates(roundWeight(tm * percentage))">
-                            <div><b>Plates per side:</b></div>
-                            <div x-html="`${calculatePlates(roundWeight(tm * percentage))}`"></div>
-                        </div>
-                    </li>
-                </template>
+            <div x-show="tm > 0" class="card">
+                <ul>
+                    <template x-if="index === 0">
+                        <h4 x-text="`Warm Up: `"></h4>
+                    </template>
+                    <template x-if="index > 0">
+                        <h4 x-text="`Workout ${index + 1}: `"></h4>
+                    </template>
+                    <template x-for="percentage in workout">
+                        <li x-data="{...window.plateCalc}" @click="plateCalc = !plateCalc" :class="plateCalc && 'open'">
+                            <span x-text="`${percentage * 100}% - ${roundWeight(tm * percentage)}lbs`"></span>
+                            <div x-show="plateCalc && calculatePlates(roundWeight(tm * percentage))">
+                                <div><b>Plates per side:</b></div>
+                                <div x-html="`${calculatePlates(roundWeight(tm * percentage))}`"></div>
+                            </div>
+                        </li>
+                    </template>
+            </div>
             </ul>
         </template>
     </div>
 
 </body>
+
 </html>
