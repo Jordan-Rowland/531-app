@@ -1,10 +1,24 @@
 const numbers = {
 
-  round_weight(weight) {
+  roundWeight(weight) {
     return 2.5 * Math.ceil(weight/2.5)
   },
 
-  calculate_plates(total) {
+  tm: null,
+  workouts: [
+    [.4, .5, .6],
+    [.65, .75, .85],
+    [.7, .8, .9],
+    [.75, .85, .95],
+  ],
+
+};
+
+const plateCalc = {
+
+  plateCalc: false,
+
+  calculatePlates(total) {
     let plate_values = [
       45,
       25,
@@ -35,18 +49,11 @@ const numbers = {
             (a, b) => b[0]-a[0]
         )
     ) {
-      console.log(key)
-      formatted_plates.push(`${key}: ${value}`)
+      formatted_plates.push(`<b>${key}</b>: ${value}`)
     }
     return formatted_plates.join(" | ")
   },
-
-  tm: 0,
-  wu_percentages: [.4, .5, .6],
-  w1_percentages: [.65, .75, .85],
-  w2_percentages: [.7, .8, .9],
-  w3_percentages: [.75, .85, .95],
-
-};
+}
 
 window.numbers = numbers;
+window.plateCalc = plateCalc;

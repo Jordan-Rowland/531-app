@@ -5,68 +5,52 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>531 Calculator</title>
     <style>
         body {
-            background-color: rgb(255, 255, 255);
+            font-family: Verdana, Geneva, Tahoma, sans-serif;
         }
+
+        li.closed::marker {
+            content: "[ + ] "
+        }
+
+        li.open::marker {
+            content: "[ = ] "
+        }
+
     </style>
-    <script src="index.js"></script>
+    <script src="app.js"></script>
 
 </head>
 <body>
 
     <div x-data="{...window.numbers}">
         <label for="tm">Training Max: </label>
-        <input id="tm" type="number" x-model="tm">
-        <ul>
-            <span>Warm Up:</span>
-            <template x-for="percentage in wu_percentages">
-                <li x-show="tm">
-                    <span x-text="`${percentage * 100}% - ${round_weight(tm * percentage)}lbs`"></span>
-                    <div x-show="calculate_plates(round_weight(tm * percentage))">
-                        <div><b>Plates per side:</b></div>
-                        <div x-text="`${calculate_plates(round_weight(tm * percentage))}`"></div>
-                    </div>
-                </li>
-            </template>
-        </ul>
-        <ul>
-            <span>Week 1:</span>
-            <template x-for="percentage in w1_percentages">
-                <li x-show="tm">
-                    <span x-text="`${percentage * 100}% - ${round_weight(tm * percentage)}lbs`"></span>
-                    <div x-show="calculate_plates(round_weight(tm * percentage))">
-                        <div><b>Plates per side:</b></div>
-                        <div x-text="`${calculate_plates(round_weight(tm * percentage))}`"></div>
-                    </div>
-                </li>
-            </template>
-        </ul>
-        <ul>
-            <span>Week 2:</span>
-            <template x-for="percentage in w2_percentages">
-                <li x-show="tm">
-                    <span x-text="`${percentage * 100}% - ${round_weight(tm * percentage)}lbs`"></span>
-                    <div x-show="calculate_plates(round_weight(tm * percentage))">
-                        <div><b>Plates per side:</b></div>
-                        <div x-text="`${calculate_plates(round_weight(tm * percentage))}`"></div>
-                    </div>
-                </li>
-            </template>
-        </ul>
-        <ul>
-            <span>Week 3:</span>
-            <template x-for="percentage in w3_percentages">
-                <li x-show="tm">
-                    <span x-text="`${percentage * 100}% - ${round_weight(tm * percentage)}lbs`"></span>
-                    <div x-show="calculate_plates(round_weight(tm * percentage))">
-                        <div><b>Plates per side:</b></div>
-                        <div x-text="`${calculate_plates(round_weight(tm * percentage))}`"></div>
-                    </div>
-                </li>
-            </template>
-        </ul>
+        <input id="tm" type="number" x-model="tm" placeholder="">
+        <template x-for="(workout, index) in workouts">
+            <ul x-show="tm > 0">
+                <template x-if="index === 0" >
+                    <h3 x-text="`Warm Up: `"></h3>
+                </template>
+                <template x-if="index > 0">
+                    <h3 x-text="`Workout ${index + 1}: `"></h3>
+                </template>
+                <template x-for="percentage in workout">
+                    <li
+                        x-data="{...window.plateCalc}"
+                        @click="plateCalc = !plateCalc"
+                        :class="plateCalc ? 'open' : 'closed'"
+                    >
+                        <span x-text="`${percentage * 100}% - ${roundWeight(tm * percentage)}lbs`"></span>
+                        <div x-show="plateCalc && calculatePlates(roundWeight(tm * percentage))">
+                            <div><b>Plates per side:</b></div>
+                            <div x-html="`${calculatePlates(roundWeight(tm * percentage))}`"></div>
+                        </div>
+                    </li>
+                </template>
+            </ul>
+        </template>
     </div>
 
 </body>
