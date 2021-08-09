@@ -1,0 +1,52 @@
+* {
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: Verdana, Geneva, Tahoma, sans-serif;
+  background-color: rgb(100, 237, 184);
+}
+
+.main {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  min-width: 90%;
+  margin: 0;
+  padding: .75em;
+}
+
+label + input {
+  margin: 1em;
+}
+
+.card {
+  box-sizing: border-box;
+  background-color: hsl(196, 100%, 85%);
+  padding: 1.2em;
+  justify-self: center;
+  margin: .75em;
+  width: 90%;
+  border-radius: .3em;
+  border: 1px solid rgba(97, 165, 189, .4);
+}
+
+ul {
+  list-style-position: inside;
+  margin: 0;
+  padding: 0;
+}
+
+li {
+  margin: .6em;
+}
+
+li::marker {
+  content: "[ + ] ";
+}
+
+li.open::marker {
+  content: "[ = ] ";
+}
