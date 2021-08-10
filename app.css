@@ -18,6 +18,12 @@ body {
   padding: .75em;
 }
 
+#options {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+}
+
 label + input {
   margin: 1em;
 }
@@ -25,7 +31,7 @@ label + input {
 .card {
   box-sizing: border-box;
   background-color: hsl(196, 100%, 85%);
-  padding: 1.2em;
+  padding: .75em;
   justify-self: center;
   margin: .75em;
   width: 90%;

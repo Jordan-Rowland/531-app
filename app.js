@@ -1,32 +1,94 @@
 document.addEventListener("alpine:init", () => {
-  Alpine.data("numbers", () => ({
-    roundWeight(weight) {
-      return 2.5 * Math.round(weight / 2.5);
-    },
-
+  Alpine.data("workoutBuilder", () => ({
+    base: 2.5,
     tm: null,
     jokers: false,
-    workouts: [
-      [.4, .5, .6],
-      [.65, .75, .85, .95, 1.05],
-      [.7, .8, .9, 1, 1.10.toFixed(2)],
-      [.75, .85, .95, 1.05, 1.15.toFixed(2)],
+    threeFiveOne: false,
+    fivePros: false,
+    fiveThreeOneworkouts: [
+      {
+        percentages: [.4, .5, .6],
+        reps: [5, 5, 3],
+      },
+      {
+        percentages: [.65, .75, .85, .95, 1.05],
+        reps: [5, 5, "5+", "1-3", "1-3"],
+      },
+      {
+        percentages: [.7, .8, .9, 1, 1.10],
+        reps: [3, 3, "3+", "1-3", "1-3"],
+      },
+      {
+        percentages: [.75, .85, .95, 1.05, 1.15],
+        reps: [5, 3, "1+", "1-3", "1-3"],
+      },
     ],
-  }));
+    threeFiveOneWorkouts: [
+      {
+        percentages: [.4, .5, .6],
+        reps: [5, 5, 3],
+      },
+      {
+        percentages: [.7, .8, .9, 1, 1.10],
+        reps: [3, 3, "3+", "1-3", "1-3"],
+      },
+      {
+        percentages: [.65, .75, .85],
+        reps: [5, 5, 5],
+      },
+      {
+        percentages: [.75, .85, .95, 1.05, 1.15],
+        reps: [5, 3, "1+", "1-3", "1-3"],
+      },
+    ],
 
-  Alpine.data("numbers", () => ({
-    roundWeight(weight) {
-      return 2.5 * Math.round(weight / 2.5);
+    roundWeight(weight, base = parseFloat(this.base)) {
+      return base * Math.round(weight / base);
     },
 
-    tm: null,
-    jokers: false,
-    workouts: [
-      [.4, .5, .6],
-      [.65, .75, .85, .95, 1.05],
-      [.7, .8, .9, 1, 1.10.toFixed(2)],
-      [.75, .85, .95, 1.05, 1.15.toFixed(2)],
-    ],
+
+    // modMainWork() {
+    //   workouts = [
+    //     {
+    //       percentages: [.4, .5, .6],
+    //       reps: [5, 5, 3],
+    //     },
+    //     {
+    //       percentages: [.65, .75, .85, .95, 1.05],
+    //       reps: [5, 5, "5+", "1-3", "1-3"],
+    //     },
+    //     {
+    //       percentages: [.7, .8, .9, 1, 1.10],
+    //       reps: [3, 3, "3+", "1-3", "1-3"],
+    //     },
+    //     {
+    //       percentages: [.75, .85, .95, 1.05, 1.15],
+    //       reps: [5, 3, "1+", "1-3", "1-3"],
+    //     },
+    //   ]
+    //   if (this.threeFiveOne) {
+    //     workouts = [
+    //       {
+    //         percentages: [.4, .5, .6],
+    //         reps: [5, 5, 3],
+    //       },
+    //       {
+    //         percentages: [.7, .8, .9, 1, 1.10],
+    //         reps: [3, 3, "3+", "1-3", "1-3"],
+    //       },
+    //       {
+    //         percentages: [.65, .75, .85],
+    //         reps: [5, 5, 5],
+    //       },
+    //       {
+    //         percentages: [.75, .85, .95, 1.05, 1.15],
+    //         reps: [5, 3, "1+", "1-3", "1-3"],
+    //       },
+    //     ]
+    //   }
+    //   this.workouts = workouts;
+    // },
+
   }));
 
   Alpine.data("plateCalc", () => ({
