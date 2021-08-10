@@ -13,7 +13,6 @@
 </head>
 
 <body>
-
     <div x-data="workoutBuilder" class="main">
         <label for="tm">Training Max:</label>
         <input id="tm" type="number" x-model="tm" placeholder="">
@@ -24,61 +23,33 @@
             <input id="threeFiveOne" x-model="threeFiveOne" type="checkbox">
             <label for="fivePros">5-PROs</label>
             <input id="fivePros" x-model="fivePros" type="checkbox">
-            <label for="base">Round to(2.5 or 5)</label>
-            <select id="base" x-model="base" type="number">
+            <label for="roundTo">Round to(2.5 or 5)</label>
+            <select id="roundTo" x-model="roundTo" type="number">
                 <option value="2.5">2.5</option>
                 <option value="5">5</option>
             </select>
         </div>
-        <!-- Find different solution for this -->
-        <!-- I do not like this duplicated data :( -->
-        <template x-if="threeFiveOne">
-            <template x-for="(workout, index) in threeFiveOneWorkouts">
-                <div x-show="tm > 0" class="card">
-                    <ul>
-                        <template x-if="index === 0">
-                            <h4 x-text="`Warm Up: `"></h4>
-                        </template>
-                        <template x-if="index > 0">
-                            <h4 x-text="`Workout ${index}: `"></h4>
-                        </template>
-                        <template x-for="percentage in workout.percentages.slice(0, jokers ? 6 : 3)">
-                            <li x-data="plateCalc" @click="plateCalc = !plateCalc" :class="plateCalc && 'open'">
-                                <span
-                                x-text="`${Math.round(percentage * 100)}% - ${roundWeight(tm * percentage)}lbs`"></span>
-                                <div x-show="plateCalc && calculatePlates(roundWeight(tm * percentage))">
-                                    <div><b>Plates per side:</b></div>
-                                    <div x-html="`${calculatePlates(roundWeight(tm * percentage))}`"></div>
-                                </div>
-                            </li>
-                        </template>
-                    </div>
+        <template x-for="(workout, index) in !threeFiveOne ? base531 : mod351">
+            <div x-show="tm > 0" class="card">
+                <ul>
+                    <template x-if="index === 0">
+                        <h4 x-text="`Warm Up: `"></h4>
+                    </template>
+                    <template x-if="index > 0">
+                        <h4 x-text="`Workout ${index}: `"></h4>
+                    </template>
+                    <template x-for="(percentage, index) in workout.percentages.slice(0, jokers ? 6 : 3)">
+                        <li x-data="plateCalc" @click="plateCalc = !plateCalc" :class="plateCalc && 'open'">
+                            <span
+                                x-text="`${Math.round(percentage * 100)}% - ${roundToWeight(tm * percentage)}lbs / ${workout.reps[index]}`"></span>
+                            <div x-show="plateCalc && calculatePlates(roundToWeight(tm * percentage))">
+                                <div><b>Plates per side:</b></div>
+                                <div x-html="`${calculatePlates(roundToWeight(tm * percentage))}`"></div>
+                            </div>
+                        </li>
+                    </template>
                 </ul>
-            </template>
-        </template>
-        <template x-if="!threeFiveOne">
-            <template x-for="(workout, index) in fiveThreeOneworkouts">
-                <div x-show="tm > 0" class="card">
-                    <ul>
-                        <template x-if="index === 0">
-                            <h4 x-text="`Warm Up: `"></h4>
-                        </template>
-                        <template x-if="index > 0">
-                            <h4 x-text="`Workout ${index}: `"></h4>
-                        </template>
-                        <template x-for="percentage in workout.percentages.slice(0, jokers ? 6 : 3)">
-                            <li x-data="plateCalc" @click="plateCalc = !plateCalc" :class="plateCalc && 'open'">
-                                <span
-                                x-text="`${Math.round(percentage * 100)}% - ${roundWeight(tm * percentage)}lbs`"></span>
-                                <div x-show="plateCalc && calculatePlates(roundWeight(tm * percentage))">
-                                    <div><b>Plates per side:</b></div>
-                                    <div x-html="`${calculatePlates(roundWeight(tm * percentage))}`"></div>
-                                </div>
-                            </li>
-                        </template>
-                    </div>
-                </ul>
-            </template>
+            </div>
         </template>
     </div>
 
