@@ -29,16 +29,17 @@
                 <option value="5">5</option>
             </select>
         </div>
-        <template x-for="(workout, index) in !threeFiveOne ? base531 : mod351">
+        <template x-for="(workout, index) in workouts" :key="workout.id"
+            x-init="$watch('threeFiveOne; fivePros; jokers', () => generateMainWork())">
             <div x-show="tm > 0" class="card">
-                <ul>
-                    <template x-if="index === 0">
-                        <h4 x-text="`Warm Up: `"></h4>
-                    </template>
-                    <template x-if="index > 0">
-                        <h4 x-text="`Workout ${index}: `"></h4>
-                    </template>
-                    <template x-for="(percentage, index) in workout.percentages.slice(0, jokers ? 6 : 3)">
+                <template x-if="index === 0">
+                    <h4 x-text="`Warm Up: `"></h4>
+                </template>
+                <template x-if="index > 0">
+                    <h4 x-text="`Workout ${index}: `"></h4>
+                </template>
+                <template x-for="(percentage, index) in workout.percentages.slice(0, jokers ? 6 : 3)">
+                    <ul>
                         <li x-data="plateCalc" @click="plateCalc = !plateCalc" :class="plateCalc && 'open'">
                             <span
                                 x-text="`${Math.round(percentage * 100)}% - ${roundToWeight(tm * percentage)}lbs / ${workout.reps[index]}`"></span>
@@ -47,8 +48,9 @@
                                 <div x-html="`${calculatePlates(roundToWeight(tm * percentage))}`"></div>
                             </div>
                         </li>
-                    </template>
-                </ul>
+                    </ul>
+                </template>
+                <!-- Supplemental work goes here -->
             </div>
         </template>
     </div>

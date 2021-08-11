@@ -1,48 +1,77 @@
 document.addEventListener("alpine:init", () => {
   Alpine.data("workoutBuilder", () => ({
     roundTo: 2.5,
-    tm: null,
+    tm: 245,
     jokers: false,
     threeFiveOne: false,
     fivePros: false,
 
-    base531: [
-      // 531
+    workouts: [
       {
+        id: 1,
         percentages: [.4, .5, .6],
         reps: [5, 5, 3],
       },
       {
+        id: 2,
         percentages: [.65, .75, .85, .95, 1.05],
         reps: [5, 5, "5+", "1-3", "1-3"],
       },
       {
+        id: 3,
         percentages: [.7, .8, .9, 1, 1.10],
         reps: [3, 3, "3+", "1-3", "1-3"],
       },
       {
+        id: 4,
         percentages: [.75, .85, .95, 1.05, 1.15],
         reps: [5, 3, "1+", "1-3", "1-3"],
       },
     ],
-    mod351: [
-      {
-        percentages: [.4, .5, .6],
-        reps: [5, 5, 3],
-      },
-      {
-        percentages: [.7, .8, .9, 1, 1.10],
-        reps: [3, 3, "3+", "1-3", "1-3"],
-      },
-      {
-        percentages: [.65, .75, .85],
-        reps: [5, 5, 5],
-      },
-      {
-        percentages: [.75, .85, .95, 1.05, 1.15],
-        reps: [5, 3, "1+", "1-3", "1-3"],
-      },
-    ],
+
+    generateMainWork() {
+      workouts = [
+        {
+          id: 1,
+          percentages: [.4, .5, .6],
+          reps: [5, 5, 3],
+        },
+        {
+          id: 2,
+          percentages: [.65, .75, .85, .95, 1.05],
+          reps: [5, 5, "5+", "1-3", "1-3"],
+        },
+        {
+          id: 3,
+          percentages: [.7, .8, .9, 1, 1.10],
+          reps: [3, 3, "3+", "1-3", "1-3"],
+        },
+        {
+          id: 4,
+          percentages: [.75, .85, .95, 1.05, 1.15],
+          reps: [5, 3, "1+", "1-3", "1-3"],
+        },
+      ];
+      if (this.threeFiveOne) {
+        let warmup = workouts.shift();
+        let five = workouts.shift();
+        let three = workouts.shift();
+        five.percentages = [.65, .75, .85];
+        five.reps = [5, 5, 5];
+        workouts = [warmup, three, five, ...workouts];
+      }
+      if (this.fivePros) {
+        workouts = workouts.map((item) => {
+          item.percentages = item.percentages.slice(0, 3);
+          item.reps = [5, 5, 5];
+          return item;
+        });
+      }
+      if (this.fivePros && this.jokers) {
+        this.jokers = false;
+      }
+      this.workouts = workouts;
+    },
 
     roundToWeight(weight, roundTo = parseFloat(this.roundTo)) {
       return roundTo * Math.round(weight / roundTo);
