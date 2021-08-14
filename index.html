@@ -46,9 +46,8 @@
                     <h4 x-text="`Workout ${index}: `"></h4>
                 </template>
                 <template x-for="(percentage, index) in workout.percentages.slice(0, jokers ? 6 : 3)">
-                    <ul>
-                        <li x-data="workoutRow(percentage)" @click="showPlates = !showPlates"
-                            :class="showPlates && 'open'">
+                    <ul x-data="workoutRow(percentage)">
+                        <li @click="showPlates = !showPlates" :class="showPlates && 'open'">
                             <span x-text="`${percentageAndWeight()} / ${workout.reps[index]}`"></span>
                             <div x-show="showPlates">
                                 <div><b>Plates per side:</b></div>

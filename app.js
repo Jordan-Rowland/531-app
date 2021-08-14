@@ -1,17 +1,15 @@
 document.addEventListener("alpine:init", () => {
   Alpine.data("workoutBuilder", () => ({
-    roundTo: 2.5,
     tm: null,
+    roundTo: 2.5,
     jokers: false,
     threeFiveOne: false,
     fivePros: false,
-    workouts: [],
     barWeight: 45,
+    workouts: [],
 
     init() {
-      if (localStorage.getItem('tm')) {
-        this.tm = localStorage.getItem('tm')
-      }
+      this.getLocalStorageFields();
       this.generateMainWork();
     },
 
@@ -57,7 +55,7 @@ document.addEventListener("alpine:init", () => {
         this.jokers = false;
       }
       this.workouts = workouts;
-      this.checkAndSetLocalStorageTM()
+      this.checkAndSetLocalStorageTM();
     },
 
     roundToWeight(weight, roundTo = parseFloat(this.roundTo)) {
@@ -65,10 +63,45 @@ document.addEventListener("alpine:init", () => {
     },
 
     checkAndSetLocalStorageTM() {
-      if (localStorage.getItem('tm') !== this.tm) {
-        localStorage.setItem('tm', this.tm)
+      if (localStorage.getItem("tm") !== this.tm) {
+        localStorage.setItem("tm", this.tm);
       }
-    }
+      if (localStorage.getItem("roundTo") !== this.roundTo) {
+        localStorage.setItem("roundTo", this.roundTo);
+      }
+      if (localStorage.getItem("jokers") !== this.jokers) {
+        localStorage.setItem("jokers", this.jokers);
+      }
+      if (localStorage.getItem("threeFiveOne") !== this.threeFiveOne) {
+        localStorage.setItem("threeFiveOne", this.threeFiveOne);
+      }
+      if (localStorage.getItem("fivePros") !== this.fivePros) {
+        localStorage.setItem("fivePros", this.fivePros);
+      }
+    },
+
+    getLocalStorageFields() {
+      console.log(localStorage);
+      if (localStorage.getItem("tm")) {
+        this.tm = localStorage.getItem("tm");
+      }
+      if (localStorage.getItem("roundTo")) {
+        this.roundTo = localStorage.getItem("roundTo");
+      }
+      if (localStorage.getItem("jokers")) {
+        this.jokers = localStorage.getItem("jokers") === "true" ? true : false;
+      }
+      if (localStorage.getItem("threeFiveOne")) {
+        this.threeFiveOne = localStorage.getItem("threeFiveOne") === "true"
+          ? true
+          : false;
+      }
+      if (localStorage.getItem("fivePros")) {
+        this.fivePros = localStorage.getItem("fivePros") === "true"
+          ? true
+          : false;
+      }
+    },
   }));
 
   Alpine.data("workoutRow", (percentage) => ({
@@ -79,10 +112,12 @@ document.addEventListener("alpine:init", () => {
     },
 
     percentageAndWeight() {
-      return `${this.percentageCalc(percentage)}% - ${this.roundToWeight(this.tm * percentage)}lbs`
+      return `${this.percentageCalc(percentage)}% - ${
+        this.roundToWeight(this.tm * percentage)
+      }lbs`;
     },
 
-    calculatePlates(total, barWeight=45) {
+    calculatePlates(total, barWeight = 45) {
       let plate_values = [
         45,
         25,
@@ -116,6 +151,5 @@ document.addEventListener("alpine:init", () => {
       }
       return formatted_plates.join(" | ");
     },
-
   }));
 });
