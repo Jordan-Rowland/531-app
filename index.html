@@ -14,6 +14,13 @@
 
 <body>
     <div x-data="workoutBuilder" class="main">
+        <!-- <div x-show="loading"> LOADING... </div>
+        <template x-for="d in await data">
+            <template x-if="data">
+                <div x-text="`${d.admin}: ${d.name}`"></div>
+                <div x-text="d.name"></div>
+            </template> -->
+        </template>
         <label for="tm">Training Max:</label>
         <input id="tm" type="number" x-model="tm" placeholder="">
         <div id="options">
@@ -40,18 +47,19 @@
                 </template>
                 <template x-for="(percentage, index) in workout.percentages.slice(0, jokers ? 6 : 3)">
                     <ul>
-                        <li x-data="plateCalc" @click="plateCalc = !plateCalc" :class="plateCalc && 'open'">
-                            <span
-                                x-text="`${Math.round(percentage * 100)}% - ${roundToWeight(tm * percentage)}lbs / ${workout.reps[index]}`"></span>
-                            <div x-show="plateCalc && calculatePlates(roundToWeight(tm * percentage))">
+                        <li x-data="workoutRow(percentage)" @click="showPlates = !showPlates"
+                            :class="showPlates && 'open'">
+                            <span x-text="`${percentageAndWeight()} / ${workout.reps[index]}`"></span>
+                            <div x-show="showPlates">
                                 <div><b>Plates per side:</b></div>
                                 <div x-html="`${calculatePlates(roundToWeight(tm * percentage))}`"></div>
                             </div>
                         </li>
                     </ul>
                 </template>
-                <!-- Supplemental work goes here -->
+
             </div>
+            <!-- Supplemental work goes here -->
         </template>
     </div>
 
