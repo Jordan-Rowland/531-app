@@ -81,7 +81,7 @@ document.addEventListener("alpine:init", () => {
     },
 
     getLocalStorageFields() {
-      console.log(localStorage);
+      console.log();
       if (localStorage.getItem("tm")) {
         this.tm = localStorage.getItem("tm");
       }
@@ -89,17 +89,15 @@ document.addEventListener("alpine:init", () => {
         this.roundTo = localStorage.getItem("roundTo");
       }
       if (localStorage.getItem("jokers")) {
-        this.jokers = localStorage.getItem("jokers") === "true" ? true : false;
+        this.jokers = JSON.parse(localStorage.getItem("jokers"));
       }
       if (localStorage.getItem("threeFiveOne")) {
-        this.threeFiveOne = localStorage.getItem("threeFiveOne") === "true"
+        this.threeFiveOne = JSON.parse(localStorage.getItem("threeFiveOne"))
           ? true
           : false;
       }
       if (localStorage.getItem("fivePros")) {
-        this.fivePros = localStorage.getItem("fivePros") === "true"
-          ? true
-          : false;
+        this.fivePros = JSON.parse(localStorage.getItem("fivePros"));
       }
     },
   }));
@@ -149,7 +147,25 @@ document.addEventListener("alpine:init", () => {
       ) {
         formatted_plates.push(`<b>${key}</b>: ${value}`);
       }
-      return formatted_plates.join(" | ");
+      if (formatted_plates.length) {
+        return formatted_plates.join(" | ");
+      } else {
+        return `<span>Add more weight!</span>`;
+      }
+    },
+
+    workoutRowComponent() {
+      return (
+        `
+        <li @click="showPlates = !showPlates" :class="showPlates && 'open'">
+        <span x-text="\`\$\{percentageAndWeight()\} / \$\{workout.reps[index]\}\`"></span>
+        <div x-show="showPlates">
+            <div><b>Plates per side:</b></div>
+            <div x-html="calculatePlates(roundToWeight(tm * percentage))"></div>
+            </div>
+        </li>
+        `
+      );
     },
   }));
 });

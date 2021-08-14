@@ -2,14 +2,13 @@
 <html lang="en">
 
 <head>
-    <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    <script defer src="alpine.js"></script>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>531 Calculator</title>
     <link rel="stylesheet" type="text/css" href="app.css">
     <script src="app.js"></script>
-
 </head>
 
 <body>
@@ -51,7 +50,7 @@
                             <span x-text="`${percentageAndWeight()} / ${workout.reps[index]}`"></span>
                             <div x-show="showPlates">
                                 <div><b>Plates per side:</b></div>
-                                <div x-html="`${calculatePlates(roundToWeight(tm * percentage))}`"></div>
+                                <div x-html="calculatePlates(roundToWeight(tm * percentage))"></div>
                             </div>
                         </li>
                     </ul>
