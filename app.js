@@ -1,7 +1,7 @@
 document.addEventListener("alpine:init", () => {
   Alpine.data("workoutBuilder", () => ({
     roundTo: 2.5,
-    tm: 245,
+    tm: null,
     jokers: false,
     threeFiveOne: false,
     fivePros: false,
@@ -9,6 +9,9 @@ document.addEventListener("alpine:init", () => {
     barWeight: 45,
 
     init() {
+      if (localStorage.getItem('tm')) {
+        this.tm = localStorage.getItem('tm')
+      }
       this.generateMainWork();
     },
 
@@ -54,11 +57,18 @@ document.addEventListener("alpine:init", () => {
         this.jokers = false;
       }
       this.workouts = workouts;
+      this.checkAndSetLocalStorageTM()
     },
 
     roundToWeight(weight, roundTo = parseFloat(this.roundTo)) {
       return roundTo * Math.round(weight / roundTo);
     },
+
+    checkAndSetLocalStorageTM() {
+      if (localStorage.getItem('tm') !== this.tm) {
+        localStorage.setItem('tm', this.tm)
+      }
+    }
   }));
 
   Alpine.data("workoutRow", (percentage) => ({
@@ -72,41 +82,40 @@ document.addEventListener("alpine:init", () => {
       return `${this.percentageCalc(percentage)}% - ${this.roundToWeight(this.tm * percentage)}lbs`
     },
 
+    calculatePlates(total, barWeight=45) {
+      let plate_values = [
+        45,
+        25,
+        10,
+        5,
+        2.5,
+        1.25,
+      ];
+      let plates = {};
+      const total_minus_bar = total - barWeight;
+      let half_total = total_minus_bar / 2;
+      for (const w of plate_values) {
+        while (half_total >= w) {
+          if (plates[w] === undefined) {
+            plates[w] = 1;
+          } else {
+            plates[w] += 1;
+          }
+          half_total -= w;
+        }
+      }
+      let formatted_plates = [];
+      for (
+        const [key, value] of Object
+          .entries(plates)
+          .sort(
+            (a, b) => b[0] - a[0],
+          )
+      ) {
+        formatted_plates.push(`<b>${key}</b>: ${value}`);
+      }
+      return formatted_plates.join(" | ");
+    },
+
   }));
 });
-
-
-function calculatePlates(total, barWeight=45) {
-  let plate_values = [
-    45,
-    25,
-    10,
-    5,
-    2.5,
-    1.25,
-  ];
-  let plates = {};
-  const total_minus_bar = total - barWeight;
-  let half_total = total_minus_bar / 2;
-  for (const w of plate_values) {
-    while (half_total >= w) {
-      if (plates[w] === undefined) {
-        plates[w] = 1;
-      } else {
-        plates[w] += 1;
-      }
-      half_total -= w;
-    }
-  }
-  let formatted_plates = [];
-  for (
-    const [key, value] of Object
-      .entries(plates)
-      .sort(
-        (a, b) => b[0] - a[0],
-      )
-  ) {
-    formatted_plates.push(`<b>${key}</b>: ${value}`);
-  }
-  return formatted_plates.join(" | ");
-}
