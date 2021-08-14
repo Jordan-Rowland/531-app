@@ -102,70 +102,115 @@ document.addEventListener("alpine:init", () => {
     },
   }));
 
+
   Alpine.data("workoutRow", (percentage) => ({
     showPlates: false,
 
-    percentageCalc() {
-      return Math.round(percentage * 100);
-    },
-
     percentageAndWeight() {
-      return `${this.percentageCalc(percentage)}% - ${
+      return `${percentageReadable(percentage)}% - ${
         this.roundToWeight(this.tm * percentage)
       }lbs`;
     },
 
-    calculatePlates(total, barWeight = 45) {
-      let plate_values = [
-        45,
-        25,
-        10,
-        5,
-        2.5,
-        1.25,
-      ];
-      let plates = {};
-      const total_minus_bar = total - barWeight;
-      let half_total = total_minus_bar / 2;
-      for (const w of plate_values) {
-        while (half_total >= w) {
-          if (plates[w] === undefined) {
-            plates[w] = 1;
-          } else {
-            plates[w] += 1;
-          }
-          half_total -= w;
-        }
-      }
-      let formatted_plates = [];
-      for (
-        const [key, value] of Object
-          .entries(plates)
-          .sort(
-            (a, b) => b[0] - a[0],
-          )
-      ) {
-        formatted_plates.push(`<b>${key}</b>: ${value}`);
-      }
-      if (formatted_plates.length) {
-        return formatted_plates.join(" | ");
-      } else {
-        return `<span>Add more weight!</span>`;
-      }
+    // calculatePlates(total, barWeight = 45) {
+    //   let plate_values = [
+    //     45,
+    //     25,
+    //     10,
+    //     5,
+    //     2.5,
+    //     1.25,
+    //   ];
+    //   let plates = {};
+    //   const total_minus_bar = total - barWeight;
+    //   let half_total = total_minus_bar / 2;
+    //   for (const w of plate_values) {
+    //     while (half_total >= w) {
+    //       if (plates[w] === undefined) {
+    //         plates[w] = 1;
+    //       } else {
+    //         plates[w] += 1;
+    //       }
+    //       half_total -= w;
+    //     }
+    //   }
+    //   let formatted_plates = [];
+    //   for (
+    //     const [key, value] of Object
+    //       .entries(plates)
+    //       .sort(
+    //         (a, b) => b[0] - a[0],
+    //       )
+    //   ) {
+    //     formatted_plates.push(`<b>${key}</b>: ${value}`);
+    //   }
+    //   if (formatted_plates.length) {
+    //     return formatted_plates.join(" | ");
+    //   } else {
+    //     return `<span>Add more weight!</span>`;
+    //   }
+    // },
+  }));
+
+
+  Alpine.data("supplemental", (workout) => ({
+    supplementalMap: {
+      fsl: {
+        label: "FSL",
+        percentage: workout.percentages[0],
+      },
+      ssl: {
+        label: "SSL",
+        percentage: workout.percentages[1],
+      },
     },
 
-    workoutRowComponent() {
-      return (
-        `
-        <li @click="showPlates = !showPlates" :class="showPlates && 'open'">
-        <span x-text="\`\$\{percentageAndWeight()\} / \$\{workout.reps[index]\}\`"></span>
-        <div x-show="showPlates">
-            <div><b>Plates per side:</b></div>
-            <div x-html="calculatePlates(roundToWeight(tm * percentage))"></div>
-            </div>
-        </li>
-        `
-      );
-    },
+    // init() {
+    //   console.log(this.supplementalMap["fsl"])
+    // },
   }));
+
 });
+
+function percentageReadable(percentage) {
+  return Math.round(percentage * 100);
+}
+
+function calculatePlates(total, barWeight = 45) {
+  let plate_values = [
+    45,
+    25,
+    10,
+    5,
+    2.5,
+    1.25,
+  ];
+  let plates = {};
+  const total_minus_bar = total - barWeight;
+  let half_total = total_minus_bar / 2;
+  for (const w of plate_values) {
+    while (half_total >= w) {
+      if (plates[w] === undefined) {
+        plates[w] = 1;
+      } else {
+        plates[w] += 1;
+      }
+      half_total -= w;
+    }
+  }
+  let formatted_plates = [];
+  for (
+    const [key, value] of Object
+      .entries(plates)
+      .sort(
+        (a, b) => b[0] - a[0],
+      )
+  ) {
+    formatted_plates.push(`<b>${key}</b>: ${value}`);
+  }
+  if (formatted_plates.length) {
+    return formatted_plates.join(" | ");
+  } else {
+    return `<span>Add more weight!</span>`;
+  }
+}

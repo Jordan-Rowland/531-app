@@ -2,10 +2,12 @@
 <html lang="en">
 
 <head>
-    <script defer src="alpine.js"></script>
+    <!-- <script defer src="alpine.js"></script> -->
+    <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="favicon.ico" type="image/png">
     <title>531 Calculator</title>
     <link rel="stylesheet" type="text/css" href="app.css">
     <script src="app.js"></script>
@@ -13,12 +15,6 @@
 
 <body>
     <div x-data="workoutBuilder" class="main">
-        <!-- <div x-show="loading"> LOADING... </div>
-        <template x-for="d in await data">
-            <template x-if="data">
-                <div x-text="`${d.admin}: ${d.name}`"></div>
-                <div x-text="d.name"></div>
-            </template> -->
         </template>
         <label for="tm">Training Max:</label>
         <input id="tm" type="number" x-model="tm" placeholder="">
@@ -55,9 +51,21 @@
                         </li>
                     </ul>
                 </template>
-
+                <div class="supplemental-block" x-data="{...supplemental(workout), open: false}">
+                    <div x-data="{
+                        label: supplementalMap['fsl']['label'],
+                        percentage: percentageReadable(supplementalMap['fsl']['percentage']),
+                        weight: roundToWeight(supplementalMap['fsl']['percentage'] * tm),
+                    }"
+                    @click="open = !open">
+                    <div><b>Supplemental: <span x-text="label"></span></b></div>
+                        <div x-text="`${percentage}% - ${weight}lbs / 5x5`"></div>
+                        <div x-show="open"><b>Plates per side:</b></div>
+                        <div x-show="open"
+                            x-html="calculatePlates(weight)"></div>
+                    </div>
+                </div>
             </div>
-            <!-- Supplemental work goes here -->
         </template>
     </div>
 
