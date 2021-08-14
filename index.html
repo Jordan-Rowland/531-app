@@ -51,19 +51,23 @@
                         </li>
                     </ul>
                 </template>
-                <div class="supplemental-block" x-data="{...supplemental(workout), open: false}">
-                    <div x-data="{
-                        label: supplementalMap['fsl']['label'],
-                        percentage: percentageReadable(supplementalMap['fsl']['percentage']),
-                        weight: roundToWeight(supplementalMap['fsl']['percentage'] * tm),
-                    }"
-                    @click="open = !open">
-                    <div><b>Supplemental: <span x-text="label"></span></b></div>
-                        <div x-text="`${percentage}% - ${weight}lbs / 5x5`"></div>
-                        <div x-show="open"><b>Plates per side:</b></div>
-                        <div x-show="open"
-                            x-html="calculatePlates(weight)"></div>
-                    </div>
+                <template x-if="index != 0">
+                <div class="supplemental-block" x-data="{
+                    ...supplementalComponent(workout),
+                    open: false,
+                    supplemental: supplemental
+                }">
+                        <div x-data="{
+                        label: supplementalMap[supplemental]['label'],
+                        percentage: percentageReadable(supplementalMap[supplemental]['percentage']),
+                        weight: roundToWeight(supplementalMap[supplemental]['percentage'] * tm),
+                    }" @click="open = !open">
+                            <div><b>Supplemental: <span x-text="label"></span></b></div>
+                            <div x-text="`${percentage}% - ${weight}lbs / 5x5`"></div>
+                            <div x-show="open"><b>Plates per side:</b></div>
+                            <div x-show="open" x-html="calculatePlates(weight)"></div>
+                        </div>
+                    </template>
                 </div>
             </div>
         </template>

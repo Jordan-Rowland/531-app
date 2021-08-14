@@ -7,6 +7,8 @@ document.addEventListener("alpine:init", () => {
     fivePros: false,
     barWeight: 45,
     workouts: [],
+    supplemental: "fsl",
+    // ,
 
     init() {
       this.getLocalStorageFields();
@@ -153,7 +155,7 @@ document.addEventListener("alpine:init", () => {
   }));
 
 
-  Alpine.data("supplemental", (workout) => ({
+  Alpine.data("supplementalComponent", (workout) => ({
     supplementalMap: {
       fsl: {
         label: "FSL",
@@ -165,9 +167,6 @@ document.addEventListener("alpine:init", () => {
       },
     },
 
-    // init() {
-    //   console.log(this.supplementalMap["fsl"])
-    // },
   }));
 
 });
