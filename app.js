@@ -65,7 +65,6 @@ document.addEventListener("alpine:init", () => {
     },
 
     checkAndSetLocalStorage() {
-      console.log("got here")
       if (localStorage.getItem("tm") !== this.tm) {
         localStorage.setItem("tm", this.tm);
       }
@@ -87,7 +86,6 @@ document.addEventListener("alpine:init", () => {
     },
 
     getLocalStorageFields() {
-      console.log();
       if (localStorage.getItem("tm")) {
         this.tm = localStorage.getItem("tm");
       }
@@ -118,39 +116,28 @@ document.addEventListener("alpine:init", () => {
     percentageAndWeight() {
       return `${percentageReadable(percentage)}% - ${
         this.roundWeight(this.tm * percentage)
-      }lbs`;
+        }lbs`;
     },
 
   }));
 
 
   Alpine.data("supplementalComponent", (workout) => ({
-    supplementalMap: {},
+    supplementalMap: {
+      fsl: {
+        label: "FSL",
+        percentage: workout.percentages[0],
+      },
+      ssl: {
+        label: "SSL",
+        percentage: workout.percentages[1],
+      },
+    },
     label: null,
     percentage: null,
     weight: null,
 
-    init() {
-      // This needs to be set from the builder component
-      console.log(this.supplementalMap)
-      this.setSupplementalState()
-    },
-
-    setSupplementalState() {
-      this.supplementalMap = {
-        fsl: {
-          label: "FSL",
-          percentage: workout.percentages[0],
-        },
-        ssl: {
-          label: "SSL",
-          percentage: workout.percentages[1],
-        },
-      }
-    },
-
-    setState(supplemental_) {
-      console.log(supplemental_)
+    setsupplementalState(supplemental_) {
       this.label = this.getLabel(supplemental_);
       this.percentage = percentageReadable(this.supplementalMap[supplemental_]['percentage']);
       this.weight = this.roundWeight(this.supplementalMap[supplemental_]['percentage'] * this.tm);

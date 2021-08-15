@@ -61,7 +61,7 @@
                     open: false,
                     supplemental_: supplemental,
                 }"
-                x-init="$watch('supplemental', (value) => setState(value))">
+                x-init="$watch('supplemental, tm', (value) => setsupplementalState(value))">
                         <!-- Maybe move the below data into component ?? -->
                         <!--
                             I think this is not working because the data below gets set(calculated) the first time it runs
@@ -69,7 +69,7 @@
 
                             ^-- first tests here don't work, because it is still getting calc'd on render...
                         -->
-                        <div x-init="setState(supplemental_)" @click="open = !open">
+                        <div x-init="setsupplementalState(supplemental_)" @click="open = !open">
                             <div><b>Supplemental: <span x-text="label"></span></b></div>
                             <div x-text="`${percentage}% - ${weight}lbs / 5x5`"></div>
                             <div x-show="open"><b>Plates per side:</b></div>
