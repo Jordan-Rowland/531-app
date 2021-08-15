@@ -57,14 +57,15 @@ document.addEventListener("alpine:init", () => {
         this.jokers = false;
       }
       this.workouts = workouts;
-      this.checkAndSetLocalStorageTM();
+      this.checkAndSetLocalStorage();
     },
 
-    roundToWeight(weight, roundTo = parseFloat(this.roundTo)) {
-      return roundTo * Math.round(weight / roundTo);
+    roundWeight(weight, roundTo = parseFloat(this.roundTo)) {
+      return roundWeight(weight, roundTo);
     },
 
-    checkAndSetLocalStorageTM() {
+    checkAndSetLocalStorage() {
+      console.log("got here")
       if (localStorage.getItem("tm") !== this.tm) {
         localStorage.setItem("tm", this.tm);
       }
@@ -79,6 +80,9 @@ document.addEventListener("alpine:init", () => {
       }
       if (localStorage.getItem("fivePros") !== this.fivePros) {
         localStorage.setItem("fivePros", this.fivePros);
+      }
+      if (localStorage.getItem("supplemental") !== this.supplemental) {
+        localStorage.setItem("supplemental", this.supplemental);
       }
     },
 
@@ -101,6 +105,9 @@ document.addEventListener("alpine:init", () => {
       if (localStorage.getItem("fivePros")) {
         this.fivePros = JSON.parse(localStorage.getItem("fivePros"));
       }
+      if (localStorage.getItem("supplemental")) {
+        this.supplemental = localStorage.getItem("supplemental");
+      }
     },
   }));
 
@@ -110,61 +117,51 @@ document.addEventListener("alpine:init", () => {
 
     percentageAndWeight() {
       return `${percentageReadable(percentage)}% - ${
-        this.roundToWeight(this.tm * percentage)
+        this.roundWeight(this.tm * percentage)
       }lbs`;
     },
 
-    // calculatePlates(total, barWeight = 45) {
-    //   let plate_values = [
-    //     45,
-    //     25,
-    //     10,
-    //     5,
-    //     2.5,
-    //     1.25,
-    //   ];
-    //   let plates = {};
-    //   const total_minus_bar = total - barWeight;
-    //   let half_total = total_minus_bar / 2;
-    //   for (const w of plate_values) {
-    //     while (half_total >= w) {
-    //       if (plates[w] === undefined) {
-    //         plates[w] = 1;
-    //       } else {
-    //         plates[w] += 1;
-    //       }
-    //       half_total -= w;
-    //     }
-    //   }
-    //   let formatted_plates = [];
-    //   for (
-    //     const [key, value] of Object
-    //       .entries(plates)
-    //       .sort(
-    //         (a, b) => b[0] - a[0],
-    //       )
-    //   ) {
-    //     formatted_plates.push(`<b>${key}</b>: ${value}`);
-    //   }
-    //   if (formatted_plates.length) {
-    //     return formatted_plates.join(" | ");
-    //   } else {
-    //     return `<span>Add more weight!</span>`;
-    //   }
-    // },
   }));
 
 
   Alpine.data("supplementalComponent", (workout) => ({
-    supplementalMap: {
-      fsl: {
-        label: "FSL",
-        percentage: workout.percentages[0],
-      },
-      ssl: {
-        label: "SSL",
-        percentage: workout.percentages[1],
-      },
+    supplementalMap: {},
+    label: null,
+    percentage: null,
+    weight: null,
+
+    init() {
+      // This needs to be set from the builder component
+      console.log(this.supplementalMap)
+      this.setSupplementalState()
+    },
+
+    setSupplementalState() {
+      this.supplementalMap = {
+        fsl: {
+          label: "FSL",
+          percentage: workout.percentages[0],
+        },
+        ssl: {
+          label: "SSL",
+          percentage: workout.percentages[1],
+        },
+      }
+    },
+
+    setState(supplemental_) {
+      console.log(supplemental_)
+      this.label = this.getLabel(supplemental_);
+      this.percentage = percentageReadable(this.supplementalMap[supplemental_]['percentage']);
+      this.weight = this.roundWeight(this.supplementalMap[supplemental_]['percentage'] * this.tm);
+    },
+
+    getLabel(supplemental) {
+      return this.supplementalMap[supplemental]['label']
+    },
+
+    roundWeight(weight, roundTo = parseFloat(this.roundTo)) {
+      return roundWeight(weight, roundTo);
     },
 
   }));
@@ -212,4 +209,9 @@ function calculatePlates(total, barWeight = 45) {
   } else {
     return `<span>Add more weight!</span>`;
   }
+}
+
+//! This function cannot be used itself because it references a value inside an Alpine.data object
+function roundWeight(weight, roundTo = parseFloat(this.roundTo)) {
+  return roundTo * Math.round(weight / roundTo);
 }

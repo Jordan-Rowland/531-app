@@ -25,14 +25,18 @@
             <input id="threeFiveOne" x-model="threeFiveOne" type="checkbox">
             <label for="fivePros">5-PROs</label>
             <input id="fivePros" x-model="fivePros" type="checkbox">
-            <label for="roundTo">Round to(2.5 or 5)</label>
+            <label for="roundTo">Round to</label>
             <select id="roundTo" x-model="roundTo" type="number">
                 <option value="2.5">2.5</option>
                 <option value="5">5</option>
             </select>
+            <select id="supplemental" x-model="supplemental">
+                <option value="fsl">FSL</option>
+                <option value="ssl">SSL</option>
+            </select>
         </div>
         <template x-for="(workout, index) in workouts" :key="workout.id"
-            x-init="$watch('threeFiveOne; fivePros; jokers', () => generateMainWork())">
+            x-init="$watch('tm, threeFiveOne, fivePros, jokers, roundTo, supplemental', () => {generateMainWork()})">
             <div x-show="tm > 0" class="card">
                 <template x-if="index === 0">
                     <h4 x-text="`Warm Up: `"></h4>
@@ -46,31 +50,35 @@
                             <span x-text="`${percentageAndWeight()} / ${workout.reps[index]}`"></span>
                             <div x-show="showPlates">
                                 <div><b>Plates per side:</b></div>
-                                <div x-html="calculatePlates(roundToWeight(tm * percentage))"></div>
+                                <div x-html="calculatePlates(roundWeight(tm * percentage))"></div>
                             </div>
                         </li>
                     </ul>
                 </template>
                 <template x-if="index != 0">
-                <div class="supplemental-block" x-data="{
+                    <div class="supplemental-block" x-data="{
                     ...supplementalComponent(workout),
                     open: false,
-                    supplemental: supplemental
-                }">
-                        <div x-data="{
-                        label: supplementalMap[supplemental]['label'],
-                        percentage: percentageReadable(supplementalMap[supplemental]['percentage']),
-                        weight: roundToWeight(supplementalMap[supplemental]['percentage'] * tm),
-                    }" @click="open = !open">
+                    supplemental_: supplemental,
+                }"
+                x-init="$watch('supplemental', (value) => setState(value))">
+                        <!-- Maybe move the below data into component ?? -->
+                        <!--
+                            I think this is not working because the data below gets set(calculated) the first time it runs
+                            and is not getting re-calculated afterwards. Need methods, I think
+
+                            ^-- first tests here don't work, because it is still getting calc'd on render...
+                        -->
+                        <div x-init="setState(supplemental_)" @click="open = !open">
                             <div><b>Supplemental: <span x-text="label"></span></b></div>
                             <div x-text="`${percentage}% - ${weight}lbs / 5x5`"></div>
                             <div x-show="open"><b>Plates per side:</b></div>
                             <div x-show="open" x-html="calculatePlates(weight)"></div>
                         </div>
-                    </template>
-                </div>
+                </template>
             </div>
-        </template>
+    </div>
+    </template>
     </div>
 
 </body>

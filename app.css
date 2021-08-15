@@ -5,7 +5,8 @@
 
 body {
   font-family: Verdana, Geneva, Tahoma, sans-serif;
-  background-color: rgb(100, 237, 184);
+  /* background-color: rgb(100, 237, 184); */
+  background-color: rgb(7, 65, 43);
 }
 
 .main {
@@ -30,7 +31,8 @@ label + input {
 
 .card {
   box-sizing: border-box;
-  background-color: hsl(196, 100%, 85%);
+  /* background-color: hsl(196, 100%, 85%); */
+  background-color: hsl(196, 64%, 17%);
   padding: .75em;
   justify-self: center;
   margin: .75em;
