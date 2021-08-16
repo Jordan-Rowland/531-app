@@ -44,26 +44,8 @@
         </div>
         <label for="tm">Training Max:</label>
         <input id="tm" type="number" x-model="tm" placeholder="">
-        <!-- <div id="options">
-            <label for="jokers">Jokers</label>
-            <input id="jokers" x-model="jokers" type="checkbox" :disabled="fivePros">
-            <label for="threeFiveOne">351</label>
-            <input id="threeFiveOne" x-model="threeFiveOne" type="checkbox">
-            <label for="fivePros">5-PROs</label>
-            <input id="fivePros" x-model="fivePros" type="checkbox">
-            <label for="roundTo">Round to</label>
-            <select id="roundTo" x-model="roundTo" type="number">
-                <option value="2.5">2.5</option>
-                <option value="5">5</option>
-            </select>
-            <select id="supplemental" x-model="supplemental">
-                <option value="fsl">FSL</option>
-                <option value="ssl">SSL</option>
-            </select>
-        </div> -->
         <template x-for="(workout, index) in workouts" :key="workout.id" x-effect="generateMainWork()"
             x-init="$watch('jokers', () => generateMainWork())">
-            <!-- x-init="$watch('tm, threeFiveOne, fivePros, jokers, roundTo, supplemental', () => {generateMainWork()})" -->
             <div x-show="tm > 0" class="card">
                 <template x-if="index === 0">
                     <h4 x-text="`Warm Up: `"></h4>

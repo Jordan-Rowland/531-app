@@ -9,6 +9,10 @@ body {
   background-color: rgb(170, 225, 204);
 }
 
+.selected-exercise {
+  background-color: blue;
+}
+
 [x-cloak] { display: none !important; }
 
 .menu-open-icon, .menu-close-icon {
