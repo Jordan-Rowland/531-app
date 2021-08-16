@@ -1,5 +1,6 @@
 document.addEventListener("alpine:init", () => {
   Alpine.data("workoutBuilder", () => ({
+    showOptions: false,
     tm: null,
     roundTo: 2.5,
     jokers: false,
@@ -53,9 +54,6 @@ document.addEventListener("alpine:init", () => {
           return item;
         });
       }
-      if (this.fivePros && this.jokers) {
-        this.jokers = false;
-      }
       this.workouts = workouts;
       this.checkAndSetLocalStorage();
     },
@@ -97,8 +95,6 @@ document.addEventListener("alpine:init", () => {
       }
       if (localStorage.getItem("threeFiveOne")) {
         this.threeFiveOne = JSON.parse(localStorage.getItem("threeFiveOne"))
-          ? true
-          : false;
       }
       if (localStorage.getItem("fivePros")) {
         this.fivePros = JSON.parse(localStorage.getItem("fivePros"));

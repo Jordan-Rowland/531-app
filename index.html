@@ -15,12 +15,38 @@
 
 <body>
     <div x-data="workoutBuilder" class="main">
-        </template>
+        <img class="menu-open-icon" @click="showOptions = !showOptions"
+            src="https://img.icons8.com/material-outlined/24/000000/menu--v1.png" />
+        <div x-show="showOptions" class="options" x-cloak>
+            <div class="backdrop"></div>
+            <div class="options-panal" @click.outside="showOptions = !showOptions">
+                <img class="menu-close-icon" @click="showOptions = !showOptions"
+                    src="https://img.icons8.com/material-outlined/24/000000/close-window.png" />
+                <div id="options">
+                    <label for="jokers">Jokers</label>
+                    <input id="jokers" x-model="jokers" type="checkbox" :disabled="fivePros">
+                    <label for="threeFiveOne">351</label>
+                    <input id="threeFiveOne" x-model="threeFiveOne" type="checkbox">
+                    <label for="fivePros">5-PROs</label>
+                    <input id="fivePros" x-model="fivePros" type="checkbox">
+                    <label for="roundTo">Round to</label>
+                    <select id="roundTo" x-model="roundTo" type="number">
+                        <option value="2.5">2.5</option>
+                        <option value="5">5</option>
+                    </select>
+                    <label for="supplemental">Supplemental</label>
+                    <select id="supplemental" x-model="supplemental">
+                        <option value="fsl">FSL</option>
+                        <option value="ssl">SSL</option>
+                    </select>
+                </div>
+            </div>
+        </div>
         <label for="tm">Training Max:</label>
         <input id="tm" type="number" x-model="tm" placeholder="">
-        <div id="options">
+        <!-- <div id="options">
             <label for="jokers">Jokers</label>
-            <input id="jokers" x-model="jokers" type="checkbox">
+            <input id="jokers" x-model="jokers" type="checkbox" :disabled="fivePros">
             <label for="threeFiveOne">351</label>
             <input id="threeFiveOne" x-model="threeFiveOne" type="checkbox">
             <label for="fivePros">5-PROs</label>
@@ -34,9 +60,10 @@
                 <option value="fsl">FSL</option>
                 <option value="ssl">SSL</option>
             </select>
-        </div>
-        <template x-for="(workout, index) in workouts" :key="workout.id"
-            x-init="$watch('tm, threeFiveOne, fivePros, jokers, roundTo, supplemental', () => {generateMainWork()})">
+        </div> -->
+        <template x-for="(workout, index) in workouts" :key="workout.id" x-effect="generateMainWork()"
+            x-init="$watch('jokers', () => generateMainWork())">
+            <!-- x-init="$watch('tm, threeFiveOne, fivePros, jokers, roundTo, supplemental', () => {generateMainWork()})" -->
             <div x-show="tm > 0" class="card">
                 <template x-if="index === 0">
                     <h4 x-text="`Warm Up: `"></h4>
@@ -59,10 +86,8 @@
                     <div class="supplemental-block" x-data="{
                     ...supplementalComponent(workout),
                     open: false,
-                    supplemental_: supplemental,
-                }"
-                x-init="$watch('supplemental, tm, roundTo', (value) => setsupplementalState(value))">
-                        <div x-init="setsupplementalState(supplemental_)" @click="open = !open">
+                }" x-effect="setsupplementalState(supplemental)">
+                        <div x-init="setsupplementalState(supplemental)" @click="open = !open">
                             <div><b>Supplemental: <span x-text="label"></span></b></div>
                             <div x-text="`${percentage}% - ${weight}lbs / 5x5`"></div>
                             <div x-show="open"><b>Plates per side:</b></div>
