@@ -15,6 +15,10 @@
 
 <body>
     <div x-data="workoutBuilder" class="main">
+        <!-- <label class="switch">
+            <input type="checkbox" x-model="$store.darkMode">
+            <span class="slider round"></span>
+        </label> -->
         <img class="menu-open-icon" @click="showOptions = !showOptions"
             src="https://img.icons8.com/material-outlined/24/000000/menu--v1.png" />
         <div x-show="showOptions" class="options" x-cloak>
@@ -38,6 +42,14 @@
                     <select id="supplemental" x-model="supplemental">
                         <option value="fsl">FSL</option>
                         <option value="ssl">SSL</option>
+                        <option value="bbb">BBB</option>
+                    </select>
+                    <label x-show="supplemental === 'bbb'" for="bbb-percentage">BBB Percentage</label>
+                    <select x-show="supplemental === 'bbb'" id="bbb-percentage" x-model="bbbPercentage">
+                        <option value=".4">40%</option>
+                        <option value=".5">50%</option>
+                        <option value=".6">60%</option>
+                        <option value="fsl">FSL</option>
                     </select>
                 </div>
             </div>
@@ -71,7 +83,8 @@
                 }" x-effect="setsupplementalState(supplemental)">
                         <div x-init="setsupplementalState(supplemental)" @click="open = !open">
                             <div><b>Supplemental: <span x-text="label"></span></b></div>
-                            <div x-text="`${percentage}% - ${weight}lbs / 5x5`"></div>
+                            <div x-text="`${percentage}% - ${weight}lbs / ${supplemental == 'bbb' ? '5x10' : '5x5'}`">
+                            </div>
                             <div x-show="open"><b>Plates per side:</b></div>
                             <div x-show="open" x-html="calculatePlates(weight)"></div>
                         </div>

@@ -1,4 +1,6 @@
 document.addEventListener("alpine:init", () => {
+  Alpine.store('darkMode', false)
+
   Alpine.data("workoutBuilder", () => ({
     showOptions: false,
     tm: null,
@@ -9,6 +11,7 @@ document.addEventListener("alpine:init", () => {
     barWeight: 45,
     workouts: [],
     supplemental: "fsl",
+    bbbPercentage: .4,
     // ,
 
     init() {
@@ -128,15 +131,24 @@ document.addEventListener("alpine:init", () => {
         label: "SSL",
         percentage: workout.percentages[1],
       },
+      bbb: {
+        label: "BBB",
+        percentage: .4,
+      },
     },
     label: null,
     percentage: null,
     weight: null,
 
     setsupplementalState(supplemental_) {
+      let bbb = null;
+      if (this.bbbPercentage === "fsl") {
+        bbb = true;
+      }
+      this.supplementalMap.bbb.percentage = this.bbbPercentage
       this.label = this.getLabel(supplemental_);
-      this.percentage = percentageReadable(this.supplementalMap[supplemental_]['percentage']);
-      this.weight = this.roundWeight(this.supplementalMap[supplemental_]['percentage'] * this.tm);
+      this.percentage = percentageReadable(this.supplementalMap[bbb ? "fsl" : supplemental_]['percentage']);
+      this.weight = this.roundWeight(this.supplementalMap[bbb ? "fsl" : supplemental_]['percentage'] * this.tm);
     },
 
     getLabel(supplemental) {
@@ -146,6 +158,10 @@ document.addEventListener("alpine:init", () => {
     roundWeight(weight, roundTo = parseFloat(this.roundTo)) {
       return roundWeight(weight, roundTo);
     },
+
+    init() {
+      // console.log(this.bbbPercentage)
+    }
 
   }));
 
