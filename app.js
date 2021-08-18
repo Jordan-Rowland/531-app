@@ -84,6 +84,9 @@ document.addEventListener("alpine:init", () => {
       if (localStorage.getItem("supplemental") !== this.supplemental) {
         localStorage.setItem("supplemental", this.supplemental);
       }
+      if (localStorage.getItem("bbbPercentage") !== this.bbbPercentage) {
+        localStorage.setItem("bbbPercentage", this.bbbPercentage);
+      }
     },
 
     getLocalStorageFields() {
@@ -104,6 +107,9 @@ document.addEventListener("alpine:init", () => {
       }
       if (localStorage.getItem("supplemental")) {
         this.supplemental = localStorage.getItem("supplemental");
+      }
+      if (localStorage.getItem("bbbPercentage")) {
+        this.bbbPercentage = localStorage.getItem("bbbPercentage");
       }
     },
   }));
