@@ -20,7 +20,7 @@ body {
 
 .backdrop {
   position: fixed;
-  background-color: rgba(0, 0, 0, .6);
+  background-color: rgba(0, 0, 0, .7);
   left: 0;
   top: 0;
   width: 100%;
@@ -94,6 +94,7 @@ li.open::marker {
 .supplemental-block {
   background-color: rgba(115, 156, 171, 0.4);
   padding: .5em;
+  margin-top: 1em;
   border-radius: .2em;
 }
 

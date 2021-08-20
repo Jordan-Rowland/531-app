@@ -139,7 +139,6 @@ document.addEventListener("alpine:init", () => {
       },
       bbb: {
         label: "BBB",
-        percentage: .4,
       },
     },
     label: null,
@@ -153,8 +152,8 @@ document.addEventListener("alpine:init", () => {
       }
       this.supplementalMap.bbb.percentage = this.bbbPercentage
       this.label = this.getLabel(supplemental_);
-      this.percentage = percentageReadable(this.supplementalMap[bbb ? "fsl" : supplemental_]['percentage']);
-      this.weight = this.roundWeight(this.supplementalMap[bbb ? "fsl" : supplemental_]['percentage'] * this.tm);
+      this.percentage = percentageReadable(this.supplementalMap[ bbb ? "fsl" : supplemental_ ]['percentage']);
+      this.weight = this.roundWeight(this.supplementalMap[ bbb ? "fsl" : supplemental_ ]['percentage'] * this.tm);
     },
 
     getLabel(supplemental) {
@@ -164,10 +163,6 @@ document.addEventListener("alpine:init", () => {
     roundWeight(weight, roundTo = parseFloat(this.roundTo)) {
       return roundWeight(weight, roundTo);
     },
-
-    init() {
-      // console.log(this.bbbPercentage)
-    }
 
   }));
 
